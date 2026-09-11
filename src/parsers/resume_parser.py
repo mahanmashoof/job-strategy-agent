@@ -37,13 +37,5 @@ class ResumeParser:
         return ""
     
     def _extract_skills(self) -> List[str]:
-        """Extract skills using the same list as job cleaner"""
-        from src.cleaners.job_cleaner import JobCleaner
-        cleaner = JobCleaner()
-        
-        text_lower = self.raw_text.lower()
-        found = []
-        for skill in cleaner.known_skills:
-            if re.search(rf'\b{re.escape(skill)}\b', text_lower):
-                found.append(skill)
-        return sorted(found)
+        from src.parsers.skill_extractor import SkillExtractor
+        return SkillExtractor().extract(self.raw_text)

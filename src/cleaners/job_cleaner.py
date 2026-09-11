@@ -8,14 +8,8 @@ class JobCleaner:
         self.known_skills = self._load_skills()
     
     def _load_skills(self) -> set:
-        """Load common tech skills"""
-        return {
-            "python", "javascript", "typescript", "react", "vue", "angular",
-            "node", "django", "flask", "fastapi", "aws", "azure", "gcp",
-            "docker", "kubernetes", "postgres", "mongodb", "mysql", "redis",
-            "git", "linux", "nginx", "graphql", "rest", "api", "ci/cd",
-            "terraform", "ansible", "jenkins", "prometheus", "grafana"
-        }
+        from src.parsers.skills_db import SKILLS
+        return set(SKILLS.keys())
     
     def clean(self, jobs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Clean and validate job data"""
@@ -74,14 +68,8 @@ class JobCleaner:
         return text.strip()
     
     def _extract_skills(self, text: str) -> List[str]:
-        """Extract known skills from text"""
-        text_lower = text.lower()
-        found = set()
-        for skill in self.known_skills:
-            # Check as whole word
-            if re.search(rf'\b{skill}\b', text_lower):
-                found.add(skill)
-        return sorted(list(found))
+        from src.parsers.skill_extractor import SkillExtractor
+        return SkillExtractor().extract(text)
     
     def _parse_date(self, date_str: str) -> str:
         """Parse various date formats to ISO"""
