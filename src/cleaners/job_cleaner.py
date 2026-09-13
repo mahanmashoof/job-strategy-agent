@@ -11,10 +11,21 @@ class JobCleaner:
         from src.parsers.skills_db import SKILLS
         return set(SKILLS.keys())
     
-    def clean(self, jobs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def clean(self, jobs: List[Dict[str, Any]], filter_titles: bool = True) -> List[Dict[str, Any]]:
         """Clean and validate job data"""
         cleaned = []
         seen_urls = set()
+        
+        # Load target roles for filtering
+        target_roles = []
+        if filter_titles:
+            try:
+                with open("data/target_roles.txt") as f:
+                    target_roles = [line.strip().lower() for line in f if line.strip()]
+            except FileNotFoundError:
+                pass
+        
+        skipped_no_match = 0
         
         for job in jobs:
             # Skip if missing critical fields
@@ -26,6 +37,13 @@ class JobCleaner:
             if url in seen_urls:
                 continue
             seen_urls.add(url)
+            
+            # NEW: Title filter
+            if target_roles:
+                title_lower = job["title"].lower()
+                if not any(role in title_lower for role in target_roles):
+                    skipped_no_match += 1
+                    continue
             
             # Clean description
             desc = job.get("description", "")
@@ -47,10 +65,12 @@ class JobCleaner:
                 "skills": skills,
                 "source": job.get("source", "unknown"),
                 "posted_date": posted_date,
-                # Metadata
                 "word_count": len(desc.split()),
                 "skill_count": len(skills)
             })
+        
+        if skipped_no_match:
+            print(f"ℹ️  Filtered out {skipped_no_match} jobs (title didn't match target roles)")
         
         return cleaned
     

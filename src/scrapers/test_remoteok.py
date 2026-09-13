@@ -2,7 +2,7 @@ from src.scrapers.remoteok import RemoteOKScraper
 import json
 
 scraper = RemoteOKScraper()
-jobs = scraper.fetch_jobs(limit=10)
+jobs = scraper.fetch_jobs(limit=100)
 
 print(f"✅ Fetched {len(jobs)} jobs")
 
