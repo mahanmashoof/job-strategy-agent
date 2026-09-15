@@ -3,7 +3,7 @@
 **Senior Software Engineer | React, TypeScript, AI & Product Development**  
 Based in Sweden · Open to office | hybrid | remote
 
-📧 mahan.mashoof@gmail.com · 📱 +46735 956 610
+📧 mahan.mashoof@gmail.com · 📱 +46 735 956 610
 
 [LinkedIn](#) | [Portfolio](https://portfolio-mahan.vercel.app) | [Github](#)
 
@@ -135,7 +135,7 @@ Senior Software Engineer with a background in mechanical/aerospace engineering a
 ### Senior Mechanical Engineer
 **Prevas Consultant / Swedish Space Corporation** · Jun 2011 – Apr 2013
 
-- Participated in rocket launch campaign for ESA micro-gravity experiment (X-ray imaging of metal-alloy crystallization). Managed launch preparation, assembly, and subsequent redesign for Zero-G parabolic flight tests with strict ESA safety compliance.
+- Led rocket launch campaign for ESA micro-gravity experiment (X-ray imaging of metal-alloy crystallization). Managed launch preparation, assembly, and subsequent redesign for Zero-G parabolic flight tests with strict ESA safety compliance.
 - Reviewed, tested, and documented systems for launch preparation and troubleshooting.
 - Contributed to rocket assembly and dimensional analysis according to ESA requirements.
 - Redesigned X-ray shielded unit for zero-G flight installation per ESA safety directives.
@@ -188,7 +188,7 @@ Senior Software Engineer with a background in mechanical/aerospace engineering a
 
 ---
 
-## Side Projects
+## Side Projects (AI)
 
 - **AI Data Insights Dashboard** – CSV analysis with AI-generated insights and interactive charts. Built with Next.js, TypeScript, Vite, Recharts, and OpenAI API.
 - **AI Recipe Generator** – Generates personalized recipes from available ingredients. React, TypeScript, Spring Boot, REST API, OpenAI.
@@ -196,6 +196,15 @@ Senior Software Engineer with a background in mechanical/aerospace engineering a
 - **AI Document Q&A** – Full-stack semantic document search using vector embeddings and LLMs. Next.js, TypeScript, OpenAI, Claude, Supabase, pgvector.
 
 All projects available at: [portfolio-mahan.vercel.app](https://portfolio-mahan.vercel.app)
+
+---
+
+## Voluntary Work
+
+**Edumais** – English Teacher · Aug 2019 – Nov 2020
+
+- Planning classes and teaching English to children of ages between 6-13 at an NGO based in Rio de Janeiro, Brazil.
+- Taught alone and in groups of teachers, both in the classroom and online.
 
 ---
 
