@@ -1,10 +1,12 @@
 from typing import List, Dict, Type
 from src.scrapers.boards.base_board import BaseJobBoard
 from src.scrapers.boards.remoteok import RemoteOKBoard
+from src.scrapers.boards.remotive import RemotiveBoard
 
 # Register all available boards here
 BOARDS: Dict[str, Type[BaseJobBoard]] = {
     RemoteOKBoard.name: RemoteOKBoard,
+    RemotiveBoard.name: RemotiveBoard,
     # Add new boards here as you build them
 }
 
