@@ -48,7 +48,7 @@ class JobCleaner:
                     continue
             
             # NEW: Geo filter
-            location_ok, reason = is_target_location(
+            location_ok, _ = is_target_location(
                 job.get("location", ""),
                 job.get("location_restrictions")  # from Himalayas board
             )
@@ -82,7 +82,8 @@ class JobCleaner:
         
         if skipped_no_match:
             print(f"ℹ️  Filtered out {skipped_no_match} jobs (title didn't match target roles)")
-        
+        if skipped_geo:
+            print(f"ℹ️  Filtered out {skipped_geo} jobs (geo mismatch)")
         return cleaned
     
     def _clean_html(self, text: str) -> str:

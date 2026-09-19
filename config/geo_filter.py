@@ -1,6 +1,5 @@
 """Centralized geographic filtering for remote job listings."""
 
-# ISO alpha-2 codes for EU countries + Brazil
 EU_COUNTRIES = {
     "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR",
     "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL",
@@ -9,95 +8,79 @@ EU_COUNTRIES = {
 BRAZIL = {"BR"}
 TARGET_COUNTRIES = EU_COUNTRIES | BRAZIL
 
-# Strings that indicate "worldwide" / "anywhere"
 WORLDWIDE_STRINGS = [
-    "worldwide", "anywhere", "global", "remote", "any location",
-    "no restriction", "international"
+    "worldwide", "anywhere", "global", "any location",
+    "no restriction", "international", "remote"
 ]
 
-# Region strings that map to multiple countries
-REGION_ALIASES = {
-    "europe": EU_COUNTRIES,
-    "eu": EU_COUNTRIES,
-    "emea": EU_COUNTRIES | {"BR"},
-}
+EU_NAMES = [
+    "germany", "france", "spain", "italy", "netherlands", "poland",
+    "sweden", "denmark", "finland", "ireland", "portugal", "austria",
+    "belgium", "czech", "romania", "greece", "hungary", "bulgaria",
+    "croatia", "estonia", "latvia", "lithuania", "luxembourg",
+    "malta", "slovakia", "slovenia", "cyprus"
+]
+
+NON_TARGET = [
+    "united states", "usa", "canada", "united kingdom", "uk only",
+    "asia", "india", "australia", "japan", "singapore", "china",
+    "philippines", "pakistan", "nigeria", "kenya", "mexico"
+]
 
 
 def is_target_location(location_raw: str, location_restrictions: list = None) -> tuple[bool, str]:
-    """
-    Determine if a job's location matches our target (EU + Brazil + Worldwide).
+    """Returns (passes_filter, reason)"""
     
-    Returns: (passes_filter: bool, reason: str)
-    """
-    # Prefer structured locationRestrictions if available (Himalayas)
+    # Structured restrictions (Himalayas)
     if location_restrictions:
         codes = set()
+        names_lower = []
         for r in location_restrictions:
             if isinstance(r, dict):
                 code = r.get("alpha2", "").upper()
+                name = r.get("name", "").lower()
+                if code:
+                    codes.add(code)
+                if name:
+                    names_lower.append(name)
             elif isinstance(r, str):
-                code = r.upper()
-            else:
-                continue
-            if code:
-                codes.add(code)
+                codes.add(r.upper())
+                names_lower.append(r.lower())
         
-        if not codes:
-            return True, "no restrictions (worldwide)"
+        if not codes and not names_lower:
+            return True, "no restrictions"
         
         if codes & TARGET_COUNTRIES:
-            return True, f"matches target: {codes & TARGET_COUNTRIES}"
+            return True, f"target code: {codes & TARGET_COUNTRIES}"
         
-        # Check for region aliases in the raw names
-        for r in location_restrictions:
-            if isinstance(r, dict):
-                name = r.get("name", "").lower()
-                for alias, countries in REGION_ALIASES.items():
-                    if alias in name:
-                        return True, f"region alias: {alias}"
+        # Check names for EU countries
+        for name in names_lower:
+            if any(eu in name for eu in EU_NAMES):
+                return True, f"EU name: {name}"
+            if "brazil" in name or "brasil" in name:
+                return True, "brazil"
         
-        return False, f"restricted to: {codes}"
+        return False, f"restricted: {codes or names_lower}"
     
-    # Fall back to string parsing
+    # String fallback
     if not location_raw:
-        return True, "no location specified"
+        return True, "no location"
     
     text = location_raw.lower().strip()
     
-    # Worldwide indicators
-    for indicator in WORLDWIDE_STRINGS:
-        if indicator in text:
-            return True, f"worldwide indicator: {indicator}"
+    for ind in WORLDWIDE_STRINGS:
+        if ind in text:
+            return True, f"worldwide: {ind}"
     
-    # Brazil
-    if "brazil" in text or "brasil" in text or "br" == text:
+    if "brazil" in text or "brasil" in text:
         return True, "brazil"
     
-    # EU country names
-    eu_names = [
-        "germany", "france", "spain", "italy", "netherlands", "poland",
-        "sweden", "denmark", "finland", "ireland", "portugal", "austria",
-        "belgium", "czech", "romania", "greece", "hungary", "bulgaria",
-        "croatia", "estonia", "latvia", "lithuania", "luxembourg",
-        "malta", "slovakia", "slovenia", "cyprus"
-    ]
-    for name in eu_names:
+    for name in EU_NAMES:
         if name in text:
-            return True, f"eu country: {name}"
+            return True, f"EU: {name}"
     
-    # Region indicators
-    if "europe" in text or "eu " in text or text.startswith("eu"):
-        return True, "europe region"
+    for ind in NON_TARGET:
+        if ind in text:
+            return False, f"non-target: {ind}"
     
-    # If it mentions a specific non-target country, reject
-    non_target_indicators = [
-        "usa", "united states", "us only", "canada", "uk only", "united kingdom",
-        "asia", "india", "australia", "japan", "singapore", "china"
-    ]
-    for indicator in non_target_indicators:
-        if indicator in text:
-            # But if it ALSO has a target country, pass
-            return False, f"non-target: {indicator}"
-    
-    # Unknown locations — pass by default (better to over-include than miss)
-    return True, f"unknown location, passing: {text[:50]}"
+    return True, f"unknown, passing"

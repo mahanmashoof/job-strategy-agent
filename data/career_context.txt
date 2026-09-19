@@ -1,0 +1,35 @@
+CURRENT SITUATION:
+- 6 years of professional frontend development experience
+- Strong in React, TypeScript, JavaScript, and modern frontend tooling
+- Started learning .NET/C# in 2026, currently beginner-intermediate
+- Limited study time: 1 hour/day (~7 hours/week, ~350 hours/year)
+
+PRIMARY GOAL:
+- Land a remote full-time role WITH EXISTING SKILLS as fast as possible
+- Only learn new skills if they strategically unlock significantly more/better opportunities
+- ROI of learning must be justified: effort vs. number of additional relevant jobs unlocked
+
+TARGET ROLE PROFILE:
+- Mid-to-senior FRONTEND roles (React/TypeScript) — primary
+- Full-stack roles that include significant frontend work — secondary
+- Senior Mechanical engineering roles
+- CAD automation roles
+- Do NOT recommend pivoting to pure backend or DevOps
+- Do NOT suggest becoming "senior backend" — that is not the goal
+
+GEOGRAPHY:
+- Remote only, must be open to EU residents or Brazil
+- No relocation
+
+CONSTRAINTS & REALITIES:
+- 6 years FE experience is a strong baseline — do not treat candidate as junior
+- 1 hour/day is the hard study limit
+- Learning 3 new languages in a year is not realistic and not desirable
+- Prioritize skills with highest "jobs unlocked per study hour"
+
+OUTPUT PRIORITIES:
+1. Which existing skills to emphasize/reframe on CV for maximum market fit
+2. If any skill must be added, pick AT MOST 1-2 with clear ROI justification
+3. Realistic timeline for landing a role (not "12 months of study first")
+4. Concrete weekly actions that respect the 1h/day constraint
+5. Do NOT default to "learn Python/Go" unless the data strongly demands it for FRONTEND roles
