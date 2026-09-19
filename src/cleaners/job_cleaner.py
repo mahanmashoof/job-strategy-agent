@@ -92,25 +92,25 @@ class JobCleaner:
         return SkillExtractor().extract(text)
     
     def _parse_date(self, date_str: str) -> str:
-        """Parse various date formats to ISO"""
+        from email.utils import parsedate_to_datetime
         if not date_str:
             return datetime.now().isoformat()
         
+        # Unix timestamp
+        if date_str.isdigit():
+            return datetime.fromtimestamp(int(date_str)).isoformat()
+        
+        # RFC 822 (RSS feeds: "Wed, 19 Aug 2026 20:37:20 +0000")
         try:
-            # Try to parse if it's a timestamp
-            if date_str.isdigit():
-                dt = datetime.fromtimestamp(int(date_str))
-                return dt.isoformat()
-            
-            # Try common formats
-            for fmt in ["%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%b %d, %Y"]:
-                try:
-                    dt = datetime.strptime(date_str, fmt)
-                    return dt.isoformat()
-                except ValueError:
-                    continue
-            
-            # If all fail, return today
-            return datetime.now().isoformat()
-        except:
-            return datetime.now().isoformat()
+            return parsedate_to_datetime(date_str).isoformat()
+        except (TypeError, ValueError):
+            pass
+        
+        # ISO and common formats
+        for fmt in ["%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%b %d, %Y"]:
+            try:
+                return datetime.strptime(date_str, fmt).isoformat()
+            except ValueError:
+                continue
+        
+        return datetime.now().isoformat()
