@@ -1,6 +1,7 @@
 import re
 from typing import List, Dict, Any
 from datetime import datetime, timedelta
+from config.geo_filter import is_target_location
 import json
 
 class JobCleaner:
@@ -26,6 +27,7 @@ class JobCleaner:
                 pass
         
         skipped_no_match = 0
+        skipped_geo = 0
         
         for job in jobs:
             # Skip if missing critical fields
@@ -45,6 +47,15 @@ class JobCleaner:
                     skipped_no_match += 1
                     continue
             
+            # NEW: Geo filter
+            location_ok, reason = is_target_location(
+                job.get("location", ""),
+                job.get("location_restrictions")  # from Himalayas board
+            )
+            if not location_ok:
+                skipped_geo += 1
+                continue
+
             # Clean description
             desc = job.get("description", "")
             desc = self._clean_html(desc)

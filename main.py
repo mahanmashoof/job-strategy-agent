@@ -16,7 +16,7 @@ def main():
     
     # 1. Fetch
     print("\n[1/6] Fetching jobs from all boards...")
-    raw_jobs = fetch_all(limit_per_board=100)
+    raw_jobs = fetch_all(limit_per_board=999999)
     write_json("data/raw/all_jobs.json", raw_jobs)
     print(f"   → {len(raw_jobs)} jobs collected")
     
